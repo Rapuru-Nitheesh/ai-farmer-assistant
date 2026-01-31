@@ -198,6 +198,7 @@ if run:
 st.markdown("""
 <hr>
 <center>
-<b>Hackathon Project – Responsible AI for Agriculture 🌾</b>
+<b> Responsible AI for Agriculture 🌾</b>
 </center>
 """, unsafe_allow_html=True)
+

@@ -10,32 +10,104 @@ st.set_page_config(
 )
 
 # =====================================================
-# CUSTOM CSS
+# CUSTOM CSS (MODERN UI)
 # =====================================================
 st.markdown("""
 <style>
-.main { background-color: #f4f9f4; }
+
+/* Background */
+.main {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #ffffff;
+}
+
+/* Title */
 .title-box {
-    background: linear-gradient(90deg, #1b5e20, #4caf50);
-    padding: 25px;
-    border-radius: 16px;
-    color: white;
+    background: linear-gradient(90deg, #00c853, #64dd17);
+    padding: 28px;
+    border-radius: 18px;
+    color: #002b11;
     text-align: center;
     margin-bottom: 25px;
+    box-shadow: 0px 6px 20px rgba(0,0,0,0.3);
 }
+
+/* Section */
 .section {
-    background-color: #ffffff;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
     padding: 22px;
-    border-radius: 14px;
+    border-radius: 16px;
     margin-bottom: 22px;
-    box-shadow: 0px 4px 14px rgba(0,0,0,0.08);
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.1);
 }
+
+/* Highlight cards */
 .highlight {
-    background-color: #e8f5e9;
+    background: linear-gradient(135deg, #00e676, #00c853);
     padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    color: #003d1f;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
 }
+
+.highlight:hover {
+    transform: scale(1.05);
+}
+
+/* Button */
+.stButton>button {
+    background: linear-gradient(90deg, #ff9800, #ff5722);
+    color: white;
+    font-size: 18px;
+    border-radius: 12px;
+    padding: 10px;
+    border: none;
+    transition: 0.3s;
+}
+
+.stButton>button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #ff5722, #e64a19);
+}
+
+/* Risk */
+.risk-high {
+    background: #ff5252;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+}
+
+.risk-medium {
+    background: #ffb300;
+    padding: 15px;
+    border-radius: 12px;
+    color: black;
+}
+
+.risk-low {
+    background: #00e676;
+    padding: 15px;
+    border-radius: 12px;
+    color: black;
+}
+
+/* Info */
+.stInfo {
+    background-color: #1e88e5 !important;
+    color: white !important;
+    border-radius: 10px;
+}
+
+footer {
+    visibility: hidden;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -45,7 +117,7 @@ st.markdown("""
 st.markdown("""
 <div class="title-box">
     <h1>🌾 AI Farmer Assistant</h1>
-    <h4>Responsible AI Decision Support System for Smart Agriculture</h4>
+    <h4>Smart Agriculture Decision Support System</h4>
 </div>
 """, unsafe_allow_html=True)
 
@@ -53,6 +125,7 @@ st.markdown("""
 # INPUTS
 # =====================================================
 st.markdown("<div class='section'><h2>🧾 Farmer Input Details</h2></div>", unsafe_allow_html=True)
+
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
@@ -66,7 +139,7 @@ with c4:
     water = st.selectbox("💧 Water Availability", ["Low", "Medium", "High"])
 
 # =====================================================
-# PRIMARY AI – RULE BASED
+# AI LOGIC
 # =====================================================
 def recommend_crop(soil, season, duration, water):
     if soil == "Alluvial" and water == "High":
@@ -94,69 +167,40 @@ def recommend_crop(soil, season, duration, water):
 # KNOWLEDGE BASE
 # =====================================================
 knowledge_base = {
-    "Rice": {"price":"₹2200–2400","trend":"Increasing","budget":28000,"fert":["Urea","DAP"],"advice":"Maintain standing water."},
-    "Wheat":{"price":"₹2100–2300","trend":"Stable","budget":24000,"fert":["Urea","DAP"],"advice":"Ensure timely irrigation."},
-    "Cotton":{"price":"₹6300–6700","trend":"Stable","budget":40000,"fert":["NPK","Zinc"],"advice":"Monitor bollworms."},
-    "Maize":{"price":"₹2000–2200","trend":"Stable","budget":24000,"fert":["Urea","DAP"],"advice":"Control fall armyworm."},
-    "Groundnut":{"price":"₹5000–5400","trend":"Decreasing","budget":30000,"fert":["Gypsum","SSP"],"advice":"Ensure drainage."},
+    "Rice": {"price":"₹2200–2400","trend":"Increasing","budget":28000,"fert":["Urea","DAP"],"advice":"Maintain water level."},
+    "Wheat":{"price":"₹2100–2300","trend":"Stable","budget":24000,"fert":["Urea","DAP"],"advice":"Timely irrigation."},
+    "Cotton":{"price":"₹6300–6700","trend":"Stable","budget":40000,"fert":["NPK","Zinc"],"advice":"Check pests."},
+    "Maize":{"price":"₹2000–2200","trend":"Stable","budget":24000,"fert":["Urea","DAP"],"advice":"Control worms."},
+    "Groundnut":{"price":"₹5000–5400","trend":"Decreasing","budget":30000,"fert":["Gypsum","SSP"],"advice":"Good drainage."},
     "Millets":{"price":"₹2800–3200","trend":"Increasing","budget":17000,"fert":["Compost"],"advice":"Low water crop."},
-    "Sugarcane":{"price":"₹340–380","trend":"Stable","budget":50000,"fert":["Urea","DAP"],"advice":"Ensure irrigation."},
-    "Pulses":{"price":"₹6000–6500","trend":"Increasing","budget":20000,"fert":["DAP"],"advice":"Avoid excess nitrogen."},
-    "Soybean":{"price":"₹4200–4600","trend":"Stable","budget":28000,"fert":["DAP"],"advice":"Ensure drainage."},
-    "Sunflower":{"price":"₹5500–6000","trend":"Increasing","budget":22000,"fert":["Urea"],"advice":"Control leaf spot."}
+    "Sugarcane":{"price":"₹340–380","trend":"Stable","budget":50000,"fert":["Urea","DAP"],"advice":"Needs irrigation."},
+    "Pulses":{"price":"₹6000–6500","trend":"Increasing","budget":20000,"fert":["DAP"],"advice":"Avoid nitrogen."},
+    "Soybean":{"price":"₹4200–4600","trend":"Stable","budget":28000,"fert":["DAP"],"advice":"Proper drainage."},
+    "Sunflower":{"price":"₹5500–6000","trend":"Increasing","budget":22000,"fert":["Urea"],"advice":"Leaf care."}
 }
 
 # =====================================================
-# SCENARIO 1 – EXPLAINABILITY
-# =====================================================
-def explain_decision(soil, season, duration, water, crop):
-    return [
-        f"Soil type ({soil}) supports {crop}.",
-        f"Season ({season}) matches growth cycle.",
-        f"Crop duration ({duration}) is compatible.",
-        f"Water availability ({water}) considered."
-    ]
-
-# =====================================================
-# SCENARIO 2 – EARLY RISK + INTERVENTION
+# RISK ANALYSIS
 # =====================================================
 def risk_analysis(crop, water, duration):
     risks = []
     level = "Low"
+
     if crop in ["Rice","Sugarcane"] and water == "Low":
-        risks.append("High water demand with low water availability.")
+        risks.append("High water demand but low availability.")
         level = "High"
+
     if crop in ["Cotton","Sugarcane"] and duration == "Short (2–3 months)":
-        risks.append("Insufficient duration for crop.")
+        risks.append("Insufficient crop duration.")
         level = "Medium"
+
     if not risks:
-        risks.append("No major risk detected.")
+        risks.append("No major risks detected.")
+
     return risks, level
 
 # =====================================================
-# SCENARIO 4 – AUTONOMY MODE
-# =====================================================
-def autonomy_mode(level):
-    if level == "High":
-        return "Human-in-the-loop (Manual confirmation required)"
-    elif level == "Medium":
-        return "Human-on-the-loop (Monitoring required)"
-    else:
-        return "Fully Autonomous Recommendation"
-
-# =====================================================
-# RESPONSIBILITY (SCENARIO 3)
-# =====================================================
-def responsibility_note():
-    return {
-        "Model Type":"Rule-Based Responsible AI",
-        "Decision Owner":"AI Farmer Assistant (Advisory)",
-        "Final Authority":"Farmer / Agri Expert",
-        "Model Version":"v1.0"
-    }
-
-# =====================================================
-# RUN BUTTON
+# BUTTON
 # =====================================================
 run = st.button("🚀 Run AI Recommendation", use_container_width=True)
 
@@ -168,7 +212,8 @@ if run:
     data = knowledge_base[crop]
     risks, level = risk_analysis(crop, water, duration)
 
-    st.markdown("<div class='section'><h2>🤖 AI Decision Output</h2></div>", unsafe_allow_html=True)
+    st.markdown("<div class='section'><h2>🤖 AI Recommendation</h2></div>", unsafe_allow_html=True)
+
     c1, c2, c3 = st.columns(3)
 
     with c1:
@@ -178,19 +223,17 @@ if run:
     with c3:
         st.markdown(f"<div class='highlight'><h3>🧪 Fertilizers</h3>{', '.join(data['fert'])}</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='section'><h3>🔍 Why this decision?</h3></div>", unsafe_allow_html=True)
-    for e in explain_decision(soil, season, duration, water, crop):
-        st.write("•", e)
+    # Risk color
+    risk_class = "risk-low"
+    if level == "High":
+        risk_class = "risk-high"
+    elif level == "Medium":
+        risk_class = "risk-medium"
 
-    st.markdown(f"<div class='section'><h3>⚠️ Risk Level: {level}</h3></div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='{risk_class}'><h3>⚠️ Risk Level: {level}</h3></div>", unsafe_allow_html=True)
+
     for r in risks:
         st.info(r)
-
-    st.markdown(f"<div class='section'><h3>⚙️ Autonomy Mode</h3>{autonomy_mode(level)}</div>", unsafe_allow_html=True)
-
-    st.markdown("<div class='section'><h3>📜 Responsibility</h3></div>", unsafe_allow_html=True)
-    for k,v in responsibility_note().items():
-        st.write(f"**{k}:** {v}")
 
 # =====================================================
 # FOOTER
@@ -198,7 +241,6 @@ if run:
 st.markdown("""
 <hr>
 <center>
-<b> Responsible AI for Agriculture 🌾</b>
+<b>🌾 Smart Farming with AI</b>
 </center>
 """, unsafe_allow_html=True)
-
